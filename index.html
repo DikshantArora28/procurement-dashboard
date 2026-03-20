@@ -1224,6 +1224,33 @@ a:hover { color: var(--accent-hover); }
     border-radius: 20px;
     white-space: nowrap;
 }
+.catalog-header-cta {
+    margin-left: auto;
+}
+.catalog-header-cta .cta-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--bg-tertiary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px dashed var(--border);
+}
+.catalog-header-cta .cta-text i {
+    color: var(--accent-primary);
+    font-size: 11px;
+}
+.catalog-header-cta .cta-text a {
+    color: var(--accent-primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+.catalog-header-cta .cta-text a:hover {
+    text-decoration: underline;
+}
+
 .catalog-count-badge i {
     font-size: 11px;
 }
@@ -4250,6 +4277,9 @@ a:hover { color: var(--accent-hover); }
                     <div class="page-header-row">
                         <h2><i class="fas fa-boxes-stacked"></i> Product Catalog</h2>
                         <span class="catalog-count-badge" id="catalogCountBadge"></span>
+                        <div class="catalog-header-cta">
+                            <span class="cta-text"><i class="fas fa-search-plus"></i> Can't find your product? <a href="#" onclick="showToast('Our sales team will contact you shortly. Thank you!','success');return false;">Reach out to Sales</a></span>
+                        </div>
                     </div>
                     <p>Browse and explore commodity products across all categories on our platform</p>
                 </div>
