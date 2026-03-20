@@ -551,6 +551,43 @@ a:hover { color: var(--accent-hover); }
     padding: 12px 4px;
 }
 
+/* Sidebar Collapse Button */
+.sidebar-collapse-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    margin: 8px 10px 4px;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+.sidebar-collapse-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border-color: var(--border);
+}
+.sidebar-collapse-btn i {
+    font-size: 11px;
+    transition: transform 0.3s ease;
+}
+.sidebar.collapsed .sidebar-collapse-btn {
+    justify-content: center;
+    margin: 8px 4px 4px;
+    padding: 10px;
+}
+.sidebar.collapsed .sidebar-collapse-btn span {
+    display: none;
+}
+.sidebar.collapsed .sidebar-collapse-btn i {
+    transform: rotate(180deg);
+    font-size: 14px;
+}
+
 .sidebar-nav {
     flex: 1;
     padding: 12px 10px;
@@ -1189,6 +1226,165 @@ a:hover { color: var(--accent-hover); }
 }
 .catalog-count-badge i {
     font-size: 11px;
+}
+
+/* ===== CATALOG FILTER SIDEBAR ===== */
+.catalog-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+.catalog-filter-sidebar {
+    width: 240px;
+    min-width: 240px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    position: sticky;
+    top: 16px;
+    max-height: calc(100vh - var(--header-height) - 120px);
+    overflow-y: auto;
+}
+.catalog-main-area {
+    flex: 1;
+    min-width: 0;
+}
+.filter-search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 8px 12px;
+    margin-bottom: 18px;
+}
+.filter-search-box i { color: var(--text-muted); font-size: 13px; }
+.filter-search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13px;
+    color: var(--text-primary);
+    width: 100%;
+    font-family: inherit;
+}
+.filter-search-box input::placeholder { color: var(--text-muted); }
+.filter-section {
+    margin-bottom: 20px;
+}
+.filter-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    padding: 0 4px;
+}
+.filter-section-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+}
+.filter-section-toggle i {
+    font-size: 10px;
+    transition: transform 0.2s;
+}
+.filter-section-toggle.collapsed i {
+    transform: rotate(180deg);
+}
+.filter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 450;
+    font-family: inherit;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: left;
+    width: 100%;
+}
+.filter-item:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+.filter-item.active {
+    background: var(--accent-light);
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+.filter-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.filter-item i {
+    width: 16px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+.filter-item.active i {
+    color: var(--accent-primary);
+}
+.catalog-active-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    min-height: 0;
+}
+.active-filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--accent-light);
+    color: var(--accent-primary);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+.active-filter-tag button {
+    background: none;
+    border: none;
+    color: var(--accent-primary);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    opacity: 0.7;
+}
+.active-filter-tag button:hover { opacity: 1; }
+
+@media (max-width: 1024px) {
+    .catalog-layout { flex-direction: column; }
+    .catalog-filter-sidebar {
+        width: 100%;
+        min-width: auto;
+        position: static;
+        max-height: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    .catalog-filter-sidebar .filter-section { margin-bottom: 0; flex: 1; min-width: 180px; }
 }
 
 /* Catalog Sales CTA */
@@ -3431,6 +3627,10 @@ a:hover { color: var(--accent-hover); }
     <div class="app-container">
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
+            <div class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Collapse sidebar">
+                <i class="fas fa-chevron-left"></i>
+                <span>Collapse</span>
+            </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-section-title">MAIN</div>
@@ -4053,12 +4253,58 @@ a:hover { color: var(--accent-hover); }
                     </div>
                     <p>Browse and explore commodity products across all categories on our platform</p>
                 </div>
-                <div class="commodity-search-bar">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search products by name, region, or category..." id="commoditySearch">
-                </div>
-                <div class="commodity-categories" id="productCatalogContainer">
-                    <!-- Dynamically rendered by renderProductCatalog() -->
+                <div class="catalog-layout">
+                    <!-- Filter Sidebar -->
+                    <aside class="catalog-filter-sidebar" id="catalogFilterSidebar">
+                        <div class="filter-search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search commodities..." id="commoditySearch">
+                        </div>
+                        <div class="filter-section">
+                            <div class="filter-section-title">CATEGORY</div>
+                            <div class="filter-list" id="categoryFilterList">
+                                <button class="filter-item active" data-filter-cat="all"><span class="filter-dot" style="background:#9ca3af"></span> All</button>
+                                <button class="filter-item" data-filter-cat="chemicals"><span class="filter-dot" style="background:#3b82f6"></span> Chemicals</button>
+                                <button class="filter-item" data-filter-cat="polymers"><span class="filter-dot" style="background:#8b5cf6"></span> Polymers</button>
+                                <button class="filter-item" data-filter-cat="energy"><span class="filter-dot" style="background:#f59e0b"></span> Energy</button>
+                                <button class="filter-item" data-filter-cat="fertilizers"><span class="filter-dot" style="background:#10b981"></span> Fertilizers</button>
+                                <button class="filter-item" data-filter-cat="metals"><span class="filter-dot" style="background:#6366f1"></span> Metals & Mining</button>
+                                <button class="filter-item" data-filter-cat="agro"><span class="filter-dot" style="background:#22c55e"></span> Agro Commodities</button>
+                                <button class="filter-item" data-filter-cat="pulp"><span class="filter-dot" style="background:#78716c"></span> Pulp & Paper</button>
+                            </div>
+                        </div>
+                        <div class="filter-section">
+                            <div class="filter-section-title filter-section-toggle" id="regionFilterToggle">REGION <i class="fas fa-chevron-up"></i></div>
+                            <div class="filter-list" id="regionFilterList">
+                                <button class="filter-item active" data-filter-region="all">All</button>
+                                <button class="filter-item" data-filter-region="NWE">North West Europe</button>
+                                <button class="filter-item" data-filter-region="FEA">Far East Asia</button>
+                                <button class="filter-item" data-filter-region="USG">US Gulf Coast</button>
+                                <button class="filter-item" data-filter-region="ME">Middle East</button>
+                                <button class="filter-item" data-filter-region="SEA">South East Asia</button>
+                                <button class="filter-item" data-filter-region="LA">Latin America</button>
+                                <button class="filter-item" data-filter-region="India">India</button>
+                                <button class="filter-item" data-filter-region="China">China</button>
+                            </div>
+                        </div>
+                        <div class="filter-section">
+                            <div class="filter-section-title">SORT BY</div>
+                            <div class="filter-list" id="sortFilterList">
+                                <button class="filter-item active" data-sort="default"><i class="fas fa-th-large"></i> Default</button>
+                                <button class="filter-item" data-sort="price-high"><i class="fas fa-arrow-down"></i> Price (High &rarr; Low)</button>
+                                <button class="filter-item" data-sort="price-low"><i class="fas fa-arrow-up"></i> Price (Low &rarr; High)</button>
+                                <button class="filter-item" data-sort="change-high"><i class="fas fa-chart-line"></i> Change % (High)</button>
+                                <button class="filter-item" data-sort="name-az"><i class="fas fa-font"></i> Name (A &rarr; Z)</button>
+                            </div>
+                        </div>
+                    </aside>
+                    <!-- Product Grid Area -->
+                    <div class="catalog-main-area">
+                        <div class="catalog-active-filters" id="catalogActiveFilters"></div>
+                        <div class="commodity-categories" id="productCatalogContainer">
+                            <!-- Dynamically rendered by renderProductCatalog() -->
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -5848,6 +6094,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initNewsFilterSelect();
     initSettingsPages();
     renderProductCatalog();
+    initCatalogFilters();
     initProductDetailPage();
     initCategoryPage();
     initProductInfoModal();
@@ -5927,14 +6174,28 @@ function switchPage(pageId) {
 
 // ===== SIDEBAR TOGGLE =====
 function initSidebar() {
-    document.getElementById('sidebarToggle').addEventListener('click', () => {
-        const sidebar = document.getElementById('sidebar');
+    const sidebar = document.getElementById('sidebar');
+    const toggleCollapse = () => {
         if (window.innerWidth <= 1024) {
             sidebar.classList.toggle('show');
         } else {
             sidebar.classList.toggle('collapsed');
+            // Save preference
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
         }
-    });
+    };
+    document.getElementById('sidebarToggle').addEventListener('click', toggleCollapse);
+
+    // Sidebar collapse button inside sidebar
+    const collapseBtn = document.getElementById('sidebarCollapseBtn');
+    if (collapseBtn) {
+        collapseBtn.addEventListener('click', toggleCollapse);
+    }
+
+    // Restore sidebar state
+    if (localStorage.getItem('sidebarCollapsed') === 'true' && window.innerWidth > 1024) {
+        sidebar.classList.add('collapsed');
+    }
 }
 
 // ===== USER MENU =====
@@ -7611,6 +7872,171 @@ function initSettingsPages() {
             showToast('Preferences saved successfully!', 'success');
         });
     }
+}
+
+// ===== CATALOG FILTER SIDEBAR =====
+let catalogActiveCategory = 'all';
+let catalogActiveRegion = 'all';
+let catalogActiveSort = 'default';
+
+function initCatalogFilters() {
+    // Category filter
+    const catList = document.getElementById('categoryFilterList');
+    if (catList) {
+        catList.querySelectorAll('.filter-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                catList.querySelectorAll('.filter-item').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                catalogActiveCategory = btn.getAttribute('data-filter-cat');
+                applyCatalogFilters();
+            });
+        });
+    }
+
+    // Region filter
+    const regionList = document.getElementById('regionFilterList');
+    if (regionList) {
+        regionList.querySelectorAll('.filter-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                regionList.querySelectorAll('.filter-item').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                catalogActiveRegion = btn.getAttribute('data-filter-region');
+                applyCatalogFilters();
+            });
+        });
+    }
+
+    // Region toggle collapse
+    const regionToggle = document.getElementById('regionFilterToggle');
+    if (regionToggle && regionList) {
+        regionToggle.addEventListener('click', () => {
+            regionToggle.classList.toggle('collapsed');
+            regionList.style.display = regionToggle.classList.contains('collapsed') ? 'none' : '';
+        });
+    }
+
+    // Sort filter
+    const sortList = document.getElementById('sortFilterList');
+    if (sortList) {
+        sortList.querySelectorAll('.filter-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                sortList.querySelectorAll('.filter-item').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                catalogActiveSort = btn.getAttribute('data-sort');
+                applyCatalogFilters();
+            });
+        });
+    }
+}
+
+function applyCatalogFilters() {
+    const container = document.getElementById('productCatalogContainer');
+    if (!container) return;
+
+    // Show/hide category sections
+    container.querySelectorAll('.category-section').forEach(sec => {
+        const catLink = sec.querySelector('.category-title-link');
+        const catId = catLink ? catLink.getAttribute('data-category') : '';
+        if (catalogActiveCategory === 'all' || catalogActiveCategory === catId) {
+            sec.style.display = '';
+        } else {
+            sec.style.display = 'none';
+        }
+    });
+
+    // Filter cards by region
+    container.querySelectorAll('.commodity-card').forEach(card => {
+        const regionEl = card.querySelector('.commodity-region');
+        const region = regionEl ? regionEl.textContent : '';
+        let regionMatch = catalogActiveRegion === 'all';
+        if (!regionMatch) {
+            const regionMap = {
+                'NWE': ['NWE', 'North West Europe', 'Europe', 'EU'],
+                'FEA': ['FEA', 'Far East Asia', 'Asia', 'NE Asia'],
+                'USG': ['US Gulf', 'USG', 'US', 'North America', 'Americas'],
+                'ME': ['Middle East', 'ME', 'Gulf'],
+                'SEA': ['SEA', 'South East Asia', 'SE Asia'],
+                'LA': ['Latin America', 'South America', 'Brazil'],
+                'India': ['India', 'Indian'],
+                'China': ['China', 'Chinese']
+            };
+            const keywords = regionMap[catalogActiveRegion] || [catalogActiveRegion];
+            regionMatch = keywords.some(kw => region.toLowerCase().includes(kw.toLowerCase()));
+        }
+        // Only adjust visibility if parent section is visible
+        const parentSection = card.closest('.category-section');
+        if (parentSection && parentSection.style.display !== 'none') {
+            card.style.display = regionMatch ? '' : 'none';
+        }
+    });
+
+    // Sort visible cards within each grid
+    if (catalogActiveSort !== 'default') {
+        container.querySelectorAll('.commodity-grid').forEach(grid => {
+            const cards = Array.from(grid.querySelectorAll('.commodity-card'));
+            cards.sort((a, b) => {
+                if (catalogActiveSort === 'name-az') {
+                    return (a.querySelector('.commodity-name')?.textContent || '').localeCompare(b.querySelector('.commodity-name')?.textContent || '');
+                }
+                if (catalogActiveSort === 'price-high' || catalogActiveSort === 'price-low') {
+                    const priceA = parseFloat((a.querySelector('.commodity-price')?.textContent || '0').replace(/[^0-9.]/g, ''));
+                    const priceB = parseFloat((b.querySelector('.commodity-price')?.textContent || '0').replace(/[^0-9.]/g, ''));
+                    return catalogActiveSort === 'price-high' ? priceB - priceA : priceA - priceB;
+                }
+                if (catalogActiveSort === 'change-high') {
+                    const changeA = parseFloat((a.querySelector('.commodity-change')?.textContent || '0').replace(/[^0-9.-]/g, ''));
+                    const changeB = parseFloat((b.querySelector('.commodity-change')?.textContent || '0').replace(/[^0-9.-]/g, ''));
+                    return changeB - changeA;
+                }
+                return 0;
+            });
+            cards.forEach(c => grid.appendChild(c));
+        });
+    }
+
+    // Update active filter tags
+    updateActiveFilterTags();
+
+    // Also apply search
+    const search = document.getElementById('commoditySearch');
+    if (search && search.value) search.dispatchEvent(new Event('input'));
+}
+
+function updateActiveFilterTags() {
+    const container = document.getElementById('catalogActiveFilters');
+    if (!container) return;
+    let html = '';
+    if (catalogActiveCategory !== 'all') {
+        const catNames = { chemicals:'Chemicals', polymers:'Polymers', energy:'Energy', fertilizers:'Fertilizers', metals:'Metals & Mining', agro:'Agro Commodities', pulp:'Pulp & Paper' };
+        html += `<span class="active-filter-tag"><i class="fas fa-filter"></i> ${catNames[catalogActiveCategory] || catalogActiveCategory} <button data-clear="category">&times;</button></span>`;
+    }
+    if (catalogActiveRegion !== 'all') {
+        html += `<span class="active-filter-tag"><i class="fas fa-globe"></i> ${catalogActiveRegion} <button data-clear="region">&times;</button></span>`;
+    }
+    if (catalogActiveSort !== 'default') {
+        const sortNames = { 'price-high':'Price ↓', 'price-low':'Price ↑', 'change-high':'Change % ↓', 'name-az':'A→Z' };
+        html += `<span class="active-filter-tag"><i class="fas fa-sort"></i> ${sortNames[catalogActiveSort]} <button data-clear="sort">&times;</button></span>`;
+    }
+    container.innerHTML = html;
+    container.querySelectorAll('button[data-clear]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const type = btn.getAttribute('data-clear');
+            if (type === 'category') {
+                catalogActiveCategory = 'all';
+                document.querySelectorAll('#categoryFilterList .filter-item').forEach(b => b.classList.remove('active'));
+                document.querySelector('#categoryFilterList .filter-item[data-filter-cat="all"]')?.classList.add('active');
+            } else if (type === 'region') {
+                catalogActiveRegion = 'all';
+                document.querySelectorAll('#regionFilterList .filter-item').forEach(b => b.classList.remove('active'));
+                document.querySelector('#regionFilterList .filter-item[data-filter-region="all"]')?.classList.add('active');
+            } else if (type === 'sort') {
+                catalogActiveSort = 'default';
+                document.querySelectorAll('#sortFilterList .filter-item').forEach(b => b.classList.remove('active'));
+                document.querySelector('#sortFilterList .filter-item[data-sort="default"]')?.classList.add('active');
+            }
+            applyCatalogFilters();
+        });
+    });
 }
 
 // ===== PRODUCT CATALOG RENDERING =====
