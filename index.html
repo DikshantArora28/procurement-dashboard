@@ -8403,7 +8403,33 @@ let myCharts = JSON.parse(localStorage.getItem('myCharts') || '[]');
 let myChartInstances = {};
 let createChartSelectedProducts = [];
 
+// Seed default charts if none exist
+function seedDefaultMyCharts() {
+    if (myCharts.length > 0) return;
+    const defaults = [
+        {
+            id: 'default_petro',
+            name: 'Petro Products Comparison',
+            products: ['ethylene', 'propylene', 'benzene'],
+            createdAt: Date.now()
+        },
+        {
+            id: 'default_pe',
+            name: 'Polyethylene Comparison',
+            products: ['hdpe', 'ldpe_film', 'lldpe_c4'],
+            createdAt: Date.now() - 1000
+        }
+    ];
+    // Ensure data exists for all default products
+    defaults.forEach(chart => {
+        chart.products.forEach(pid => ensureCommodityData(pid));
+    });
+    myCharts = defaults;
+    localStorage.setItem('myCharts', JSON.stringify(myCharts));
+}
+
 function initMyCharts() {
+    seedDefaultMyCharts();
     renderMyCharts();
 
     // Create chart buttons
