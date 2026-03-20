@@ -2928,6 +2928,92 @@ a:hover { color: var(--accent-hover); }
     text-decoration: underline;
 }
 
+/* ===== SUBCATEGORY STYLES ===== */
+.subcategory-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 0 12px;
+}
+.subcategory-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+}
+.subcategory-chip:hover {
+    background: var(--accent-primary);
+    color: #fff;
+    border-color: var(--accent-primary);
+}
+.sub-chip-count {
+    background: var(--bg-primary);
+    color: var(--text-muted);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+.subcategory-chip:hover .sub-chip-count {
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+}
+.commodity-subcategory-tag {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    opacity: 0.8;
+}
+
+/* Category Page Subcategory Tabs */
+.category-sub-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 12px 0;
+}
+.category-sub-tab {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+}
+.category-sub-tab:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+.category-sub-tab.active {
+    background: var(--accent-primary);
+    color: #fff;
+    border-color: var(--accent-primary);
+}
+.sub-tab-count {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-left: 2px;
+}
+.category-sub-tab.active .sub-tab-count {
+    opacity: 0.9;
+}
+
 /* ===== REPORT LIST (Production Cost Reports) ===== */
 .report-list {
     display: flex;
@@ -5315,6 +5401,116 @@ const productCatalog = {
     }
 };
 
+// ===== SUBCATEGORY MAPPING =====
+const subcategoryMap = {
+    chemicals: {
+        'Petrochemicals': ['Ethylene','Propylene','Butadiene','Benzene','Toluene','Xylene','Styrene','Cumene','Cyclohexane','Naphtha','MTBE','ETBE','Normal Paraffin','Linear Alkylbenzene','Isoprene','Isobutylene'],
+        'Alcohols & Solvents': ['Methanol','Ethanol','Isopropanol','n-Butanol','iso-Butanol','Glycerine','MEK','MIBK','Acetonitrile','DMF','DMSO','THF','NMP','Morpholine','Ethyl Acetate','Butyl Acetate','Dimethyl Ether','Dichloromethane','Chloroform','Trichloroethylene','Methylene Chloride','Perchloroethylene','Carbon Disulfide'],
+        'Acids & Anhydrides': ['Acetic Acid','Sulfuric Acid','Nitric Acid','Phosphoric Acid','Hydrochloric Acid','Acrylic Acid','Maleic Anhydride','Phthalic Anhydride','Citric Acid','Oxalic Acid','Formic Acid','Propionic Acid','Stearic Acid','Oleic Acid','Lauric Acid','Myristic Acid','Palmitic Acid','Boric Acid','Adipic Acid'],
+        'Monomers & Intermediates': ['Acrylonitrile','Methyl Methacrylate','Butyl Acrylate','Ethyl Acrylate','Vinyl Chloride','Vinyl Acetate','Acrolein','Ethylene Oxide','Propylene Oxide','Ethylene Glycol','Diethylene Glycol','Triethylene Glycol','Monoethylene Glycol','Ethylene Dichloride','Epichlorohydrin','Bisphenol A','Caprolactam','Aniline','1,4-Butanediol','Hexamethylenediamine','Neopentyl Glycol','Pentaerythritol','Ethylene Carbonate','Propylene Carbonate','Dimethyl Carbonate'],
+        'Isocyanates & Polyurethanes': ['TDI','MDI','MEKO','Dioctyl Phthalate','Diisononyl Phthalate','Diisodecyl Phthalate','Tributyl Phosphate','Triphenyl Phosphate'],
+        'Alkalis & Inorganics': ['Caustic Soda','Soda Ash','Chlorine','Ammonia','Urea','Formaldehyde','Paraformaldehyde','Melamine','Sodium Sulfate','Sodium Silicate','Calcium Carbonate','Sodium Bicarbonate','Potassium Hydroxide','Hydrogen Peroxide','Sodium Hypochlorite','Potassium Carbonate','Calcium Chloride','Magnesium Chloride','Sodium Cyanide','Sodium Tripolyphosphate','Potassium Permanganate','Ferric Chloride','Aluminum Sulfate','Polyaluminum Chloride','Sodium Metabisulfite','Borax'],
+        'Surfactants & Specialty': ['Sodium Lauryl Sulfate','Sodium Laureth Sulfate','Cocamidopropyl Betaine','Diethanolamine','Triethanolamine','Glutaraldehyde','Sorbitol','Carbon Black','Titanium Dioxide','Zinc Oxide'],
+        'Pigments & Additives': ['Phenol','Acetone','Acetaldehyde']
+    },
+    polymers: {
+        'Polyethylene (PE)': ['HDPE','LDPE','LLDPE','Bio-PE','Recycled HDPE','Recycled LDPE','rHDPE','rLDPE'],
+        'Polypropylene (PP)': ['PP ','Polypropylene','Recycled PP','rPP'],
+        'PVC & Vinyl': ['PVC','Vinyl'],
+        'Styrenics': ['PS ','Polystyrene','GPPS','HIPS','EPS','ABS','SAN','SBR'],
+        'Polyesters': ['PET','PBT','Polyester','Bio-PET','Recycled PET','rPET'],
+        'Engineering Plastics': ['Nylon','Polycarbonate','POM','Acetal','PMMA','PPS','PEEK','PEI','LCP','PVDF','PTFE'],
+        'Polyurethanes & Elastomers': ['PU ','TPU','TPE','EPDM','NBR','BR ','Natural Rubber','Chloroprene','Silicone Rubber','EVA'],
+        'Resins': ['Polyester Resin','Epoxy Resin','Alkyd Resin','Phenolic Resin','Melamine Resin','Urea Formaldehyde','PVA'],
+        'Fibers': ['Fiber','Fibre','Yarn','Spandex','Viscose'],
+        'Bioplastics & Recycled': ['PLA','PHA','PBS','PBAT','Bio-','Recycled','rHDPE','rPET','rPP','rLDPE']
+    },
+    energy: {
+        'Crude Oil': ['Crude Oil','WTI','Brent','Dubai','Oman','Murban','Bonny','Urals','ESPO'],
+        'Refined Products': ['Gasoline','Diesel','Jet Fuel','Fuel Oil','Naphtha','Gasoil','Petcoke'],
+        'Natural Gas': ['Natural Gas','Henry Hub','TTF','NBP','JKM','AECO'],
+        'LNG': ['LNG'],
+        'LPG': ['LPG','Propane','Butane'],
+        'Coal': ['Coal','Thermal Coal','Coking Coal'],
+        'Biofuels': ['Ethanol','Biodiesel'],
+        'Carbon Markets': ['Carbon Credit','Carbon','EU ETS','UK ETS','VCS','Gold Standard','CCA','RGGI'],
+        'Hydrogen': ['Hydrogen'],
+        'Power & Renewables': ['Electricity','Solar','Wind','Battery']
+    },
+    fertilizers: {
+        'Nitrogen Fertilizers': ['Urea','Ammonium Nitrate','Ammonium Sulfate','UAN','Calcium Ammonium','Ammonium Bicarbonate','Ammonium Chloride','Sodium Nitrate'],
+        'Phosphate Fertilizers': ['DAP','MAP','TSP','SSP','Rock Phosphate','Phosphoric Acid'],
+        'Potash Fertilizers': ['Potash','MOP','SOP','Potassium Nitrate'],
+        'NPK & Compound': ['NPK'],
+        'Sulfur & Micronutrients': ['Sulfur','Elemental Sulfur','Gypsum','Zinc Sulfate','Borax','Ferrous Sulfate','Manganese Sulfate','Copper Sulfate','Calcium Nitrate','Magnesium Sulfate'],
+        'Organic & Bio-Fertilizers': ['Humic Acid','Fulvic Acid','Seaweed','Amino Acid','Bone Meal','Blood Meal','Fish Emulsion','Vermicompost']
+    },
+    metals: {
+        'Precious Metals': ['Gold','Silver','Platinum','Palladium','Rhodium','Iridium','Ruthenium'],
+        'Base Metals': ['Copper','Aluminum','Zinc','Lead','Nickel','Tin'],
+        'Iron & Steel': ['Iron Ore','Steel','Rebar','Wire Rod','Plate','Billet','Slab','Pig Iron','DRI','HMS','Shredded Scrap','Stainless Steel'],
+        'Ferro Alloys': ['Ferrochrome','Ferromanganese','Silicomanganese','Ferrosilicon','Silicon Metal','Ferromolybdenum','Ferro Tungsten','Ferro Vanadium'],
+        'Minor & Specialty Metals': ['Molybdenum','Tungsten','Vanadium','Cobalt','Antimony','Bismuth','Cadmium','Gallium','Germanium','Indium','Selenium','Tellurium','Titanium','Magnesium','Manganese','Chromium','Chrome'],
+        'Battery Metals': ['Lithium','Cobalt Sulfate','Cobalt Hydroxide','Nickel Sulfate'],
+        'Rare Earths': ['Rare Earth','Neodymium','Praseodymium','Dysprosium','Terbium','Cerium','Lanthanum','Samarium','Scandium','Yttrium','NdPr'],
+        'Industrial Minerals': ['Bauxite','Alumina','Graphite','Fluorspar','Zircon','Ilmenite','Rutile','Tantalum','Niobium','Hafnium','Uranium'],
+        'Scrap & Recycled': ['Scrap','HMS']
+    },
+    agro: {
+        'Grains & Cereals': ['Wheat','Corn','Maize','Rice','Barley','Oats','Sorghum','Millet','Quinoa'],
+        'Oilseeds & Oils': ['Soybean','Rapeseed','Canola','Palm','Sunflower','Olive Oil','Coconut Oil','Groundnut','Cottonseed','Castor Oil','Linseed','Sesame','Mustard Oil','PFAD'],
+        'Sugar & Sweeteners': ['Sugar','Honey','Maple Syrup'],
+        'Beverages': ['Coffee','Cocoa','Tea'],
+        'Fiber Crops': ['Cotton','Jute','Rubber','Wool','Silk'],
+        'Spices & Flavors': ['Pepper','Cardamom','Cinnamon','Cloves','Turmeric','Ginger','Vanilla','Saffron','Nutmeg','Garlic','Onion'],
+        'Pulses & Nuts': ['Lentils','Chickpeas','Peas','Kidney Beans','Cashew','Almonds','Hazelnuts','Walnuts','Pistachios','Macadamia','Pine Nuts'],
+        'Dairy & Protein': ['Dairy','Butter','SMP','WMP','Cheese','Whey','Casein','Beef','Pork','Chicken','Shrimp','Salmon','Tuna','Fish'],
+        'Fruits & Vegetables': ['Orange Juice','Apple Juice','Lemon','Potato','Tomato'],
+        'Starches & Hydrocolloids': ['Tapioca','Corn Starch','Wheat Starch','Modified Starch','Gelatin','Pectin','Xanthan Gum','Carrageenan','Guar Gum'],
+        'Animal Feed': ['Animal Feed']
+    },
+    pulp: {
+        'Virgin Pulp': ['NBSK','BHKP','BEK','BSK','Dissolving Pulp','Mechanical Pulp','TMP','CTMP'],
+        'Recycled Pulp': ['Recycled Pulp','OCC','ONP','Mixed Waste','SOP'],
+        'Printing & Writing Paper': ['Newsprint','Uncoated Woodfree','Coated Woodfree','Copy Paper','LWC','SC Paper','Supercalendered','Art Paper','Bond Paper','Offset Paper'],
+        'Packaging & Containerboard': ['Kraftliner','Testliner','Fluting','Corrugated Box','Sack Kraft','Kraft Paper','Wrapping','Packaging Paper'],
+        'Board & Carton': ['Folding Boxboard','SBB','FBB','CUK','Solid Bleached Board','SBS','Coated Ivory Board','White Top Kraftliner','Paperboard'],
+        'Tissue Products': ['Tissue','Facial Tissue','Napkin','Kitchen Towel'],
+        'Specialty Papers': ['Greaseproof','Parchment','Filter Paper','Cigarette Paper','Wallpaper','Release Paper','Label Paper','Thermal Paper','Carbonless','Specialty Paper'],
+        'Wood & Raw Materials': ['Wood Chips','Wood Pellets']
+    }
+};
+
+// Function to classify a product into a subcategory
+function getSubcategory(categoryId, productName) {
+    const subs = subcategoryMap[categoryId];
+    if (!subs) return 'Other';
+    for (const [subName, keywords] of Object.entries(subs)) {
+        for (const kw of keywords) {
+            if (productName.includes(kw)) return subName;
+        }
+    }
+    return 'Other';
+}
+
+// Group products by subcategory
+function groupBySubcategory(categoryId, products) {
+    const groups = {};
+    const subs = subcategoryMap[categoryId];
+    if (subs) {
+        // Initialize in order
+        Object.keys(subs).forEach(subName => { groups[subName] = []; });
+    }
+    products.forEach(p => {
+        const sub = getSubcategory(categoryId, p.name);
+        if (!groups[sub]) groups[sub] = [];
+        groups[sub].push(p);
+    });
+    // Remove empty groups
+    Object.keys(groups).forEach(k => { if (groups[k].length === 0) delete groups[k]; });
+    return groups;
+}
+
 // ===== DYNAMIC PRODUCT GENERATION =====
 // Map searchableProducts category classes to productCatalog keys + add missing categories
 const categoryMapping = {
@@ -7405,17 +7601,28 @@ function renderProductCatalog() {
     categoryOrder.forEach(catId => {
         const cat = productCatalog[catId];
         if (!cat || !cat.products || cat.products.length === 0) return;
-        const maxShow = 8;
         const products = cat.products;
+        const subGroups = groupBySubcategory(catId, products);
+        const subNames = Object.keys(subGroups);
+
         html += `<div class="category-section">
             <div class="category-title-link" data-category="${catId}">
                 <h3><i class="fas ${cat.icon}"></i> ${cat.label}</h3>
-                <span class="category-count">${products.length} products</span>
+                <span class="category-count">${products.length} products &middot; ${subNames.length} subcategories</span>
                 <i class="fas fa-chevron-right"></i>
             </div>
+            <div class="subcategory-chips-row">`;
+        subNames.forEach(subName => {
+            html += `<span class="subcategory-chip" data-category="${catId}" data-sub="${subName}">${subName} <span class="sub-chip-count">${subGroups[subName].length}</span></span>`;
+        });
+        html += `</div>
             <div class="commodity-grid">`;
+        // Show first 8 products across subcategories
+        const maxShow = 8;
         products.slice(0, maxShow).forEach(p => {
+            const sub = getSubcategory(catId, p.name);
             html += `<div class="commodity-card clickable" data-commodity="${p.id}">
+                <div class="commodity-subcategory-tag">${sub}</div>
                 <div class="commodity-name">${p.name}</div>
                 <div class="commodity-region">${p.region}</div>
                 <div class="commodity-price">${p.price}</div>
@@ -7466,6 +7673,15 @@ function renderProductCatalog() {
         });
     });
 
+    // Subcategory chip click → open category page filtered to that subcategory
+    container.querySelectorAll('.subcategory-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            const catId = chip.getAttribute('data-category');
+            const subName = chip.getAttribute('data-sub');
+            openCategoryPage(catId, subName);
+        });
+    });
+
     // Search functionality
     const search = document.getElementById('commoditySearch');
     if (search) {
@@ -7486,37 +7702,90 @@ function renderProductCatalog() {
 }
 
 // ===== CATEGORY PAGE =====
-function openCategoryPage(categoryId) {
+function openCategoryPage(categoryId, activeSubcategory) {
     const cat = productCatalog[categoryId];
     if (!cat) return;
     document.getElementById('categoryTitle').innerHTML = `<i class="fas ${cat.icon}"></i> ${cat.label}`;
-    document.getElementById('categorySubtitle').textContent = `All ${cat.products.length} products in ${cat.label}`;
+
+    const subGroups = groupBySubcategory(categoryId, cat.products);
+    const subNames = Object.keys(subGroups);
+
+    // Build subcategory filter tabs
+    let tabsHtml = `<div class="category-sub-tabs">
+        <button class="category-sub-tab ${!activeSubcategory ? 'active' : ''}" data-sub="all">All <span class="sub-tab-count">${cat.products.length}</span></button>`;
+    subNames.forEach(subName => {
+        tabsHtml += `<button class="category-sub-tab ${activeSubcategory === subName ? 'active' : ''}" data-sub="${subName}">${subName} <span class="sub-tab-count">${subGroups[subName].length}</span></button>`;
+    });
+    tabsHtml += `</div>`;
+
+    // Insert tabs container
+    let tabsContainer = document.getElementById('categorySubTabs');
+    if (!tabsContainer) {
+        tabsContainer = document.createElement('div');
+        tabsContainer.id = 'categorySubTabs';
+        const searchEl = document.getElementById('categorySearch');
+        if (searchEl) searchEl.parentNode.insertBefore(tabsContainer, searchEl.nextSibling);
+    }
+    tabsContainer.innerHTML = tabsHtml;
+
+    // Determine which products to show
+    const displayProducts = activeSubcategory ? subGroups[activeSubcategory] || cat.products : cat.products;
+
+    document.getElementById('categorySubtitle').textContent = activeSubcategory
+        ? `${displayProducts.length} products in ${activeSubcategory} — ${cat.label}`
+        : `All ${cat.products.length} products in ${cat.label} · ${subNames.length} subcategories`;
+
     const grid = document.getElementById('categoryProductGrid');
-    let html = '';
-    cat.products.forEach(p => {
-        html += `<div class="commodity-card clickable" data-commodity="${p.id}">
-            <div class="commodity-name">${p.name}</div>
-            <div class="commodity-region">${p.region}</div>
-            <div class="commodity-price">${p.price}</div>
-            <div class="commodity-card-footer">
-                <div class="commodity-change ${p.dir}">${p.change}</div>
-                <button class="add-to-dash-btn" data-product="${p.id}" title="Add to Dashboard"><i class="fas fa-plus-circle"></i></button>
-            </div>
-        </div>`;
-    });
-    grid.innerHTML = html;
-    grid.querySelectorAll('.commodity-card.clickable').forEach(card => {
-        card.addEventListener('click', (e) => {
-            if (e.target.closest('.add-to-dash-btn')) return;
-            openPriceModal(card.getAttribute('data-commodity'));
+
+    function renderCategoryProducts(products) {
+        let html = '';
+        products.forEach(p => {
+            const sub = getSubcategory(categoryId, p.name);
+            html += `<div class="commodity-card clickable" data-commodity="${p.id}" data-subcategory="${sub}">
+                <div class="commodity-subcategory-tag">${sub}</div>
+                <div class="commodity-name">${p.name}</div>
+                <div class="commodity-region">${p.region}</div>
+                <div class="commodity-price">${p.price}</div>
+                <div class="commodity-card-footer">
+                    <div class="commodity-change ${p.dir}">${p.change}</div>
+                    <button class="add-to-dash-btn" data-product="${p.id}" title="Add to Dashboard"><i class="fas fa-plus-circle"></i></button>
+                </div>
+            </div>`;
+        });
+        grid.innerHTML = html;
+        grid.querySelectorAll('.commodity-card.clickable').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.add-to-dash-btn')) return;
+                openPriceModal(card.getAttribute('data-commodity'));
+            });
+        });
+        grid.querySelectorAll('.add-to-dash-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                addProductToDashboard(btn.getAttribute('data-product'), btn);
+            });
+        });
+    }
+
+    renderCategoryProducts(displayProducts);
+
+    // Tab click handlers
+    tabsContainer.querySelectorAll('.category-sub-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabsContainer.querySelectorAll('.category-sub-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const subFilter = tab.getAttribute('data-sub');
+            const filtered = subFilter === 'all' ? cat.products : (subGroups[subFilter] || cat.products);
+            document.getElementById('categorySubtitle').textContent = subFilter === 'all'
+                ? `All ${cat.products.length} products in ${cat.label} · ${subNames.length} subcategories`
+                : `${filtered.length} products in ${subFilter} — ${cat.label}`;
+            renderCategoryProducts(filtered);
+            // Re-apply search filter if any
+            const search = document.getElementById('categorySearch');
+            if (search && search.value) search.dispatchEvent(new Event('input'));
         });
     });
-    grid.querySelectorAll('.add-to-dash-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            addProductToDashboard(btn.getAttribute('data-product'), btn);
-        });
-    });
+
     // Category search
     const search = document.getElementById('categorySearch');
     if (search) {
@@ -7525,7 +7794,8 @@ function openCategoryPage(categoryId) {
             const q = search.value.toLowerCase();
             grid.querySelectorAll('.commodity-card').forEach(card => {
                 const name = card.querySelector('.commodity-name').textContent.toLowerCase();
-                card.style.display = name.includes(q) ? '' : 'none';
+                const sub = (card.getAttribute('data-subcategory') || '').toLowerCase();
+                card.style.display = (name.includes(q) || sub.includes(q)) ? '' : 'none';
             });
         };
     }
