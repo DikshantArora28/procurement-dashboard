@@ -509,9 +509,46 @@ a:hover { color: var(--accent-hover); }
     transition: width 0.3s ease, transform 0.3s ease;
 }
 .sidebar.collapsed {
-    width: 0;
-    overflow: hidden;
-    border-right: none;
+    width: 60px;
+    overflow: visible;
+}
+.sidebar.collapsed .nav-section-title,
+.sidebar.collapsed .nav-item span,
+.sidebar.collapsed .nav-badge,
+.sidebar.collapsed .sidebar-footer,
+.sidebar.collapsed .quick-links-header,
+.sidebar.collapsed .quick-links {
+    display: none;
+}
+.sidebar.collapsed .nav-item {
+    justify-content: center;
+    padding: 10px 0;
+    position: relative;
+}
+.sidebar.collapsed .nav-item i {
+    width: auto;
+    font-size: 16px;
+}
+.sidebar.collapsed .nav-item:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+    pointer-events: none;
+}
+.sidebar.collapsed .nav-nav {
+    padding: 12px 4px;
 }
 
 .sidebar-nav {
@@ -3397,15 +3434,15 @@ a:hover { color: var(--accent-hover); }
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-section-title">MAIN</div>
-                    <a href="#" class="nav-item active" data-page="dashboard">
+                    <a href="#" class="nav-item active" data-page="dashboard" data-tooltip="Home Dashboard">
                         <i class="fas fa-th-large"></i>
                         <span>Home Dashboard</span>
                     </a>
-                    <a href="#" class="nav-item" data-page="commodities">
+                    <a href="#" class="nav-item" data-page="commodities" data-tooltip="Product Catalog">
                         <i class="fas fa-boxes-stacked"></i>
                         <span>Product Catalog</span>
                     </a>
-                    <a href="#" class="nav-item" data-page="energy-tracker">
+                    <a href="#" class="nav-item" data-page="energy-tracker" data-tooltip="Energy Tracker">
                         <i class="fas fa-bolt"></i>
                         <span>Energy Tracker</span>
                     </a>
@@ -3413,15 +3450,15 @@ a:hover { color: var(--accent-hover); }
 
                 <div class="nav-section">
                     <div class="nav-section-title">ANALYTICS & DATA</div>
-                    <a href="#" class="nav-item" data-page="analytics">
+                    <a href="#" class="nav-item" data-page="analytics" data-tooltip="Analytics">
                         <i class="fas fa-chart-bar"></i>
                         <span>Analytics</span>
                     </a>
-                    <a href="#" class="nav-item" data-page="price-forecast">
+                    <a href="#" class="nav-item" data-page="price-forecast" data-tooltip="Forecasting Report">
                         <i class="fas fa-chart-area"></i>
                         <span>Forecasting Report</span>
                     </a>
-                    <a href="#" class="nav-item" data-page="production-cost">
+                    <a href="#" class="nav-item" data-page="production-cost" data-tooltip="Production Cost Report">
                         <i class="fas fa-file-invoice-dollar"></i>
                         <span>Production Cost Report</span>
                     </a>
@@ -3429,12 +3466,12 @@ a:hover { color: var(--accent-hover); }
 
                 <div class="nav-section">
                     <div class="nav-section-title">MARKET INTELLIGENCE</div>
-                    <a href="#" class="nav-item" data-page="news">
+                    <a href="#" class="nav-item" data-page="news" data-tooltip="PR News">
                         <i class="fas fa-newspaper"></i>
                         <span>PR News</span>
                         <span class="nav-badge">12</span>
                     </a>
-                    <a href="#" class="nav-item" data-page="disruptions">
+                    <a href="#" class="nav-item" data-page="disruptions" data-tooltip="Live Disruptions">
                         <i class="fas fa-exclamation-triangle"></i>
                         <span>Live Disruptions</span>
                         <span class="nav-badge live">LIVE</span>
@@ -3443,15 +3480,15 @@ a:hover { color: var(--accent-hover); }
 
                 <div class="nav-section">
                     <div class="nav-section-title">TOOLS & SERVICES</div>
-                    <a href="#" class="nav-item" data-page="alerts">
+                    <a href="#" class="nav-item" data-page="alerts" data-tooltip="Alerts Manager">
                         <i class="fas fa-bell"></i>
                         <span>Alerts Manager</span>
                     </a>
-                    <a href="#" class="nav-item" data-page="reports">
+                    <a href="#" class="nav-item" data-page="reports" data-tooltip="My Reports">
                         <i class="fas fa-file-alt"></i>
                         <span>My Reports</span>
                     </a>
-                    <a href="#" class="nav-item" data-page="api">
+                    <a href="#" class="nav-item" data-page="api" data-tooltip="API & Integrations">
                         <i class="fas fa-plug"></i>
                         <span>API & Integrations</span>
                     </a>
@@ -7991,8 +8028,8 @@ function renderCombinedProductChart(commodityId) {
         const cd = getProductData(compId);
         if (cd && cd.history && cd.history[histRange]) {
             const compHist = [...cd.history[histRange].data];
-            const compForecast = cd.forecast ? cd.forecast['3M'] : null;
-            if (compForecast) {
+            const compForecast = cd.forecast && cd.forecast['3M'] && cd.forecast['3M'].predicted ? cd.forecast['3M'] : null;
+            if (compForecast && compForecast.labels && compForecast.predicted) {
                 const compHistData = [...compHist];
                 for (let j = 1; j < compForecast.labels.length; j++) compHistData.push(null);
                 datasets.push({
@@ -8410,14 +8447,20 @@ function seedDefaultMyCharts() {
         {
             id: 'default_petro',
             name: 'Petro Products Comparison',
-            products: ['ethylene', 'propylene', 'benzene'],
+            products: ['ethylene', 'propylene'],
             createdAt: Date.now()
         },
         {
             id: 'default_pe',
             name: 'Polyethylene Comparison',
-            products: ['hdpe', 'ldpe_film', 'lldpe_c4'],
+            products: ['hdpe_blow_moulding', 'ldpe_film', 'lldpe_c4'],
             createdAt: Date.now() - 1000
+        },
+        {
+            id: 'default_energy',
+            name: 'Energy Benchmark',
+            products: ['crude', 'lng', 'carbon'],
+            createdAt: Date.now() - 2000
         }
     ];
     // Ensure data exists for all default products
