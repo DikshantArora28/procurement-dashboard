@@ -3892,13 +3892,12 @@ a:hover { color: var(--accent-hover); }
             <div class="sidebar-footer">
                 <div class="quick-links-header">
                     <span><i class="fas fa-star"></i> Quick Links</span>
-                    <button class="quick-link-add" title="Add Quick Link"><i class="fas fa-plus"></i></button>
                 </div>
                 <div class="quick-links">
-                    <a href="#" class="quick-link-chip">Ethylene</a>
-                    <a href="#" class="quick-link-chip">Propylene</a>
-                    <a href="#" class="quick-link-chip">Benzene</a>
-                    <a href="#" class="quick-link-chip">Crude Oil</a>
+                    <a href="#" class="quick-link-chip" data-nav="dashboard"><i class="fas fa-home"></i> Home</a>
+                    <a href="#" class="quick-link-chip" data-nav="price-forecast"><i class="fas fa-chart-area"></i> Pricing & Forecast</a>
+                    <a href="#" class="quick-link-chip" data-nav="production-cost"><i class="fas fa-file-invoice-dollar"></i> Production Cost</a>
+                    <a href="#" class="quick-link-chip" data-nav="other-services"><i class="fas fa-ellipsis-h"></i> Other Services</a>
                 </div>
             </div>
         </aside>
@@ -6785,6 +6784,22 @@ function initNavigation() {
         item.addEventListener('click', (e) => {
             e.preventDefault();
             switchPage(item.getAttribute('data-page'));
+        });
+    });
+
+    // Quick link navigation chips
+    document.querySelectorAll('.quick-link-chip[data-nav]').forEach(chip => {
+        chip.addEventListener('click', (e) => {
+            e.preventDefault();
+            const nav = chip.getAttribute('data-nav');
+            if (nav === 'other-services') {
+                const toggle = document.getElementById('otherServicesToggle');
+                if (toggle && !toggle.classList.contains('expanded')) {
+                    toggle.querySelector('.nav-expand-trigger').click();
+                }
+            } else {
+                switchPage(nav);
+            }
         });
     });
 }
