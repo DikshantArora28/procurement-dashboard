@@ -647,6 +647,14 @@ a:hover { color: var(--accent-hover); }
     50% { opacity: 0.6; }
 }
 
+/* Nav Expandable Section */
+.nav-expandable { margin: 0; }
+.nav-expand-trigger .nav-expand-icon { color: var(--text-muted); }
+.nav-expandable.expanded .nav-expand-icon { transform: rotate(180deg); }
+.nav-expand-items { padding-left: 8px; border-left: 2px solid var(--border); margin-left: 18px; }
+.sidebar.collapsed .nav-expand-items { display: none !important; }
+.sidebar.collapsed .nav-expand-icon { display: none; }
+
 .sidebar-footer {
     padding: 12px 14px;
     border-top: 1px solid var(--border);
@@ -3823,22 +3831,31 @@ a:hover { color: var(--accent-hover); }
                         <i class="fas fa-calculator"></i>
                         <span>Digital Cost Model</span>
                     </a>
-                    <a href="#" class="nav-item" data-page="procure360" data-tooltip="Procure360 (Trade Data)">
-                        <i class="fas fa-globe"></i>
-                        <span>Procure360 (Trade Data)</span>
-                    </a>
-                    <a href="#" class="nav-item" data-page="sourcing-compass" data-tooltip="Sourcing Compass">
-                        <i class="fas fa-compass"></i>
-                        <span>Sourcing Compass</span>
-                    </a>
-                    <a href="#" class="nav-item" data-page="packaging-dashboard" data-tooltip="Packaging Dashboard">
-                        <i class="fas fa-box"></i>
-                        <span>Packaging Dashboard</span>
-                    </a>
-                    <a href="#" class="nav-item" data-page="sustainability" data-tooltip="Sustainability Dashboard">
-                        <i class="fas fa-leaf"></i>
-                        <span>Sustainability Dashboard</span>
-                    </a>
+                    <div class="nav-expandable" id="otherServicesToggle">
+                        <div class="nav-item nav-expand-trigger" style="cursor:pointer" data-tooltip="Other Services">
+                            <i class="fas fa-ellipsis-h"></i>
+                            <span>Other Services</span>
+                            <i class="fas fa-chevron-down nav-expand-icon" style="margin-left:auto;font-size:10px;transition:transform 0.2s"></i>
+                        </div>
+                        <div class="nav-expand-items" style="display:none">
+                            <a href="#" class="nav-item" data-page="procure360" data-tooltip="Procure360 (Trade Data)">
+                                <i class="fas fa-globe"></i>
+                                <span>Procure360 (Trade Data)</span>
+                            </a>
+                            <a href="#" class="nav-item" data-page="sourcing-compass" data-tooltip="Sourcing Compass">
+                                <i class="fas fa-compass"></i>
+                                <span>Sourcing Compass</span>
+                            </a>
+                            <a href="#" class="nav-item" data-page="packaging-dashboard" data-tooltip="Packaging Dashboard">
+                                <i class="fas fa-box"></i>
+                                <span>Packaging Dashboard</span>
+                            </a>
+                            <a href="#" class="nav-item" data-page="sustainability" data-tooltip="Sustainability Dashboard">
+                                <i class="fas fa-leaf"></i>
+                                <span>Sustainability Dashboard</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="nav-section">
@@ -4567,6 +4584,7 @@ a:hover { color: var(--accent-hover); }
                                     </div>
                                     <button class="btn btn-outline btn-sm" id="addComparisonBtn" style="font-size:11px;padding:4px 10px"><i class="fas fa-plus"></i> Compare</button>
                                     <button class="btn btn-outline btn-sm" id="pdAddToMyCharts" style="font-size:11px;padding:4px 10px" title="Save to My Charts"><i class="fas fa-bookmark"></i> My Charts</button>
+                                    <button class="btn btn-outline btn-sm" id="pdDownloadChart" style="font-size:11px;padding:4px 10px" title="Download pricing data"><i class="fas fa-download"></i> Download</button>
                                 </div>
                             </div>
                             <div class="comparison-chips" id="comparisonChips" style="display:none"></div>
@@ -6813,6 +6831,17 @@ function initSidebar() {
     if (localStorage.getItem('sidebarCollapsed') === 'true' && window.innerWidth > 1024) {
         sidebar.classList.add('collapsed');
     }
+
+    // Expandable nav sections (Other Services)
+    document.querySelectorAll('.nav-expand-trigger').forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            const parent = trigger.closest('.nav-expandable');
+            const items = parent.querySelector('.nav-expand-items');
+            const isExpanded = parent.classList.toggle('expanded');
+            items.style.display = isExpanded ? '' : 'none';
+        });
+    });
 }
 
 // ===== USER MENU =====
@@ -9601,6 +9630,35 @@ function initMyCharts() {
             const d = commodityData[currentProductDetail];
             const name = d ? d.name + ' Chart' : 'Custom Chart';
             saveMyChartDirect(name, products);
+        });
+    }
+
+    // Download pricing data button
+    const pdDownloadBtn = document.getElementById('pdDownloadChart');
+    if (pdDownloadBtn) {
+        pdDownloadBtn.addEventListener('click', () => {
+            const d = ensureCommodityData(currentProductDetail);
+            if (!d) { showToast('No data available', 'error'); return; }
+            const hist = d.history || {};
+            const labels = hist.labels || [];
+            const prices = hist.prices || [];
+            let csv = 'Date,Price (USD/t)\n';
+            labels.forEach((l, i) => { csv += l + ',' + (prices[i] || '') + '\n'; });
+            if (d.forecast && d.forecast['3M']) {
+                csv += '\nForecast Date,Predicted,Upper,Lower\n';
+                const fc = d.forecast['3M'];
+                (fc.labels || []).forEach((l, i) => {
+                    csv += l + ',' + (fc.predicted[i]||'') + ',' + (fc.upper[i]||'') + ',' + (fc.lower[i]||'') + '\n';
+                });
+            }
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (d.name || 'pricing-data').replace(/\s+/g, '_') + '_pricing.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Pricing data downloaded as CSV', 'success');
         });
     }
 }
